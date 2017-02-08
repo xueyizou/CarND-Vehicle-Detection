@@ -20,23 +20,23 @@ This project requires **Python 3.5** and the following Python libraries installe
 - [SciPy](http://www.scipy.org/)
 - [Matplotlib](http://matplotlib.org/)
 - [OpenCV](http://opencv.org/)
-- [scikit-image](http://scikit-image.org/)
-- [scikit-learn](http://scikit-learn.org/stable/index.html)
+- [Scikit-image](http://scikit-image.org/)
+- [Scikit-learn](http://scikit-learn.org/stable/index.html)
 - [Moviepy](http://zulko.github.io/moviepy/)
 
 
 ## Folders and Files
-- `data`: Folder to hold training data. Please download the labeled data for [vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip) and [non-vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip) and extract them to this folder.
+- `data`: Folder to hold labeled training data. The data include labeled data for [vehicles](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip) and [non-vehicles](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip).
 
 - `test_images`: Folder to hold test images.
 
 - `output_images`: Folder to hold examples of the output from each stage of the image processing pipeline. It also contains the video output.
 
-- `helper_functions.py`: some useful functions modified from course materials.
+- `helper_functions.py`: some useful functions adapted from course materials.
 
 - `prepare_data.py`: python script to load training data. After loading them, the data are saved in `data_pickle.p`.
 
-- `train_classifier.py`: python scripts to train a SVM (Support Vector Machine) model classify cars and non-cars. When done, the trained model and some other important information (such as feature extraction parameters and `X_scaler`) are saved in `classifier_pickle.p`. It also includes scripts to tune the feature extraction parameters (will generate `parameter_tuning_pickle.p`).
+- `train_classifier.py`: python scripts to train an SVM (Support Vector Machine) model for classifying cars and non-cars. When done, the trained model and some other important information (such as HOG feature  parameters and `X_scaler`) are saved in `classifier_pickle.p`. It also includes scripts to tune the HOG feature parameters, which will generate `parameter_tuning_pickle.p`.
 
 - `search_classify_image.py`: python script to detect vehicles in images.
 
@@ -54,15 +54,13 @@ This project requires **Python 3.5** and the following Python libraries installe
 
 ## How to use
 
-1. download the labeled data for [vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip) and [non-vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip) and extract them to the `data` folder.
+1. run python script in `prepare_data.py` to prepare training data.
 
-2. run python script in `prepare_data.py` to prepare training data.
+1. run python scripts (skip code cell 2 if you don't want to tune HOG parameters) in `train_classifier.py` to train a SVM classifier.
 
-3. run python scripts in `train_classifier.py` to train a SVM classifier.
+1. run python scripts in `search_classify_image.py` to detect vehicles in images.
 
-4. run python scripts in `search_classify_image.py` to detect vehicles in images.
-
-5. run python scripts in `search_classify_video.py` to detect vehicles in videos.
+1. run python scripts in `search_classify_video.py` to detect vehicles in videos.
 
 ---
 ## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
@@ -80,7 +78,7 @@ You're reading it!
 
 The code for extracting HOG features is defined in the `get_hog_features(img, orient, pix_per_cell, cell_per_block, vis=False, feature_vec=True)` function located in `helper_functions.py`.
 
-I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
+I started by reading in all the `vehicle` and `non-vehicle` images.  Here are some examples of the `vehicle` and `non-vehicle` classes:
 
 vehicle | non-vehicle        
 ----|-------
@@ -89,7 +87,7 @@ vehicle | non-vehicle
 
 I then explored different color spaces and channels, and different `skimage.hog()` parameters (`orient`, `pixels_per_cell`). However, I fixed the `cells_per_block` to be (2, 2), since I don't see much space for tuning it for images sized at 64*64.
 
-I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like. Here is an example using the `YCrCb` color space and HOG parameters of `orientations=6`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
+I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like. Here is an example using the `YCrCb` color space with HOG parameters of `orientations=6`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
 <p align="center">
  <img src="./output_images/hog_images.jpeg" width="600">
@@ -98,7 +96,7 @@ I grabbed random images from each of the two classes and displayed them to get a
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-The idea to set HOG parameters is that I loop different combinations of the parameters (i.e. `color_space`, `hog_channel`, `orient`, `pix_per_cell`) and find the one that generates a very high (if not the highest) test accuracy of the trained classifier. Note that I didn't tune `cells_per_block` but set it to be (2, 2), since I didn't see much space for tuning it for images sized at 64*64.
+The idea to set HOG parameters is that I traversed different combinations of the parameters (i.e. `color_space`, `hog_channel`, `orient`, `pix_per_cell`) and find the one that generates a very high (if not the highest) test accuracy of the trained classifier. Note that I didn't tune `cells_per_block` but set it to be (2, 2), since I didn't see much space for tuning it for images sized at 64*64.
 
 The code for setting HOG parameters is in code cell 2 of `train_classifier.py` as following:
 
@@ -154,7 +152,7 @@ With this setting, the trained SVM classifier generates a test accuracy of 0.995
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-In code cell 1 of the `train_classifier.py` file, I defined a function named `train(color_space,hog_channel, orient,pix_per_cell,cell_per_block = 2,spatial_size = (16, 16), hist_bins = 16,spatial_feat = True, hist_feat = True, hog_feat = True)`. This function defined the process to train a SVM classifier. In code cell 3 of the same file, I call this function using the HOG parameters found in the previous step to do training.
+In code cell 1 of the `train_classifier.py` file, I defined a function named `train(color_space,hog_channel, orient,pix_per_cell,cell_per_block = 2,spatial_size = (16, 16), hist_bins = 16,spatial_feat = True, hist_feat = True, hog_feat = True)`. This function defined the process to train an SVM classifier. In code cell 3 of the same file, I call this function with the HOG parameters found in the previous step to do training.
 
 In addition to HOG features, I also used color features. The function to extract features is `extract_features(imgs, color_space='RGB', spatial_size=(32, 32), hist_bins=32, orient=9, pix_per_cell=8, cell_per_block=2, hog_channel=0,spatial_feat=True, hist_feat=True, hog_feat=True)`, which calls `get_hog_features()`, `bin_spatial()`, and `color_hist()`. These functions are all defined in `helper_functions.py` file.
 
@@ -163,7 +161,7 @@ In addition to HOG features, I also used color features. The function to extract
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I used a function names `generate_windows(img_shape, overlap=0.6)` to generate sliding windows. This function in turn calls `slide_window(img_shape, x_start_stop=[None, None], y_start_stop=[None, None],xy_window=(64, 64), xy_overlap=(0.5, 0.5))` to generate  fixed sized (defined by parameter `xy_window`) sliding windows in certain area (defined by parameters `x_start_stop` and `y_start_stop`) and certain overlap rate (defined by `xy_overlap`).
+I used a function names `generate_windows(img_shape, overlap=0.6)` to generate sliding windows. This function in turn calls `slide_window(img_shape, x_start_stop=[None, None], y_start_stop=[None, None],xy_window=(64, 64), xy_overlap=(0.5, 0.5))` to generate  fixed sized (defined by parameter `xy_window`) sliding windows in certain area (defined by parameters `x_start_stop` and `y_start_stop`) with certain overlap rate (defined by `xy_overlap`).
 
 I generate small windows near the horizon, and generate larger windows near the camera (i.e. the bottom of the picture). I tried different window sizes and overlap rates, and the following setting to generate sliding windows seemed to be able to get good results:
 
@@ -184,9 +182,9 @@ And following shows the generated windows on a test image (i.e. `./test_images/t
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working. How did you optimize the performance of your classifier?
 
-The search of vehicles in the generated sliding windows was done by call a function named `search_windows()` in `helper_functions.py`.
+The search of vehicles in the generated sliding windows was done by calling a function named `search_windows()` in `helper_functions.py`.
 
-The following code (in `search_classify_image.py`) shows the steps to detect car in a single image:
+The following code (in `search_classify_image.py`) shows the steps of the vehicle detection pipeline for images:
 
 ```
 windows_all=generate_windows(img_shape, overlap=0.75)
@@ -206,7 +204,7 @@ cars_found_img = draw_labeled_bboxes(np.copy(image), labels)
 ```
 Note that here I used thresholded heatmaps to avoid false positives.
 
-Following shows the results of the pipeline (on `./test_images/test1.jpg`):
+Following shows the results of the pipeline steps (on `./test_images/test1.jpg`):
 
 <p align="center">
  <img src="./output_images/pipeline_results.jpeg" width="600">
@@ -218,12 +216,12 @@ Following shows more results of the pipeline on test images in `test_images` fol
 ----|-------
 ![vehicle](./output_images/cars_found_test3.jpg) | ![vehicle](./output_images/cars_found_test4.jpg)  
 ![vehicle](./output_images/cars_found_test5.jpg) | ![vehicle](./output_images/cars_found_test6.jpg)    
----
+
 
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](.output_images/project_video_output.mp4)
+Here's a [link to my video result](./output_images/project_video_output.mp4)
 
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
@@ -274,14 +272,17 @@ This pipeline is similar to that used for processing images, except that I used 
 
 I used `scipy.ndimage.measurements.label` to find separate areas in the `heatmap_thresholded` to locate vehicles. The function `draw_labeled_bboxes()` in `helper_functions.py` was used to determined the extent of each bounding box for each vehicle.
 
----
 
 ### Discussion
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-The main difficulty for this project for me is how to track the vehicle from one frame to another. Finally, I used a list to keep previous 5 heatmaps and used a avarage heatmap to locate vehicles in a new frame. The results seemed OK, but there may be better ways.
+The main difficulty of this project for me is how to track the vehicle from one frame to another. Finally, I used a list to keep previous 5 heatmaps and used a avarage heatmap to locate vehicles in a new frame. The results seemed OK, but there may be better ways.
 
 The pipeline will fail when two vehicles were very close -- the two vehicles were treated as one. The pipeline will also likely fail when vehicles are partially obstructed.
 
-The pipeline is time-consuming and far from real-time. Better ways could be explored, for example, only generating sliding windows around previous vehicle locations.
+The pipeline is time-consuming and far from real-time. Better ways could be explored, for example, by only generating sliding windows around previous detected vehicle locations.
+
+-------------
+## Acknowledge
+Some code were adapted from the course materials.

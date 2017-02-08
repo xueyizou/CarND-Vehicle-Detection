@@ -71,6 +71,7 @@ def train(color_space,hog_channel, orient,pix_per_cell,cell_per_block = 2,
 
     return (X_scaler, svc, test_accur)
 #%% code cell 2: Tune parameters
+##### run this cell only if you want to tune parameters, otherwise, skip this section
 parameters=[]
 test_accurs=[]
 
@@ -127,27 +128,27 @@ for i in range(20):
     print('accuracy: ', sorted_combo_list[i][0], '  parameter: ',parameter)
 
 
-# The following are some good choices for (color_space,orient,pix_per_cell,hog_channel):
-#accuracy:  0.9966  best parameters are:  ('LUV', 12, 8, 'ALL')
-#accuracy:  0.9955  best parameters are:  ('YUV', 12, 8, 'ALL')
-#accuracy:  0.9952  best parameters are:  ('YCrCb', 6, 8, 'ALL')
-#accuracy:  0.9944  best parameters are:  ('LUV', 8, 8, 'ALL')
-#accuracy:  0.9944  best parameters are:  ('HSV', 9, 16, 'ALL')
-#accuracy:  0.9941  best parameters are:  ('HLS', 10, 8, 'ALL')
-#accuracy:  0.9941  best parameters are:  ('LUV', 10, 8, 'ALL')
-#accuracy:  0.9938  best parameters are:  ('YCrCb', 12, 8, 'ALL')
-#accuracy:  0.9938  best parameters are:  ('LUV', 9, 16, 'ALL')
-#accuracy:  0.9938  best parameters are:  ('LUV', 7, 8, 'ALL')
-#accuracy:  0.9938  best parameters are:  ('HSV', 12, 8, 'ALL')
-#accuracy:  0.9935  best parameters are:  ('YCrCb', 11, 16, 'ALL')
-#accuracy:  0.9935  best parameters are:  ('YUV', 11, 16, 'ALL')
-#accuracy:  0.9935  best parameters are:  ('HSV', 11, 16, 'ALL')
-#accuracy:  0.9935  best parameters are:  ('HSV', 9, 8, 'ALL')
-#accuracy:  0.9932  best parameters are:  ('YUV', 12, 16, 'ALL')
-#accuracy:  0.9932  best parameters are:  ('YUV', 10, 16, 'ALL')
-#accuracy:  0.9932  best parameters are:  ('HSV', 12, 16, 'ALL')
-#accuracy:  0.9932  best parameters are:  ('HSV', 10, 8, 'ALL')
-#accuracy:  0.993  best parameters are:  ('HSV', 10, 16, 'ALL')
+# The following are some good choices for (color_space,hog_channel,orient,pix_per_cell):
+#accuracy:  0.9955   parameter:  ('LUV', 'ALL', 12, 8)
+#accuracy:  0.9952   parameter:  ('YCrCb', 'ALL', 12, 16)
+#accuracy:  0.9952   parameter:  ('YCrCb', 'ALL', 6, 8)
+#accuracy:  0.9952   parameter:  ('LUV', 'ALL', 10, 8)
+#accuracy:  0.9949   parameter:  ('YUV', 'ALL', 10, 8)
+#accuracy:  0.9949   parameter:  ('LUV', 'ALL', 8, 8)
+#accuracy:  0.9949   parameter:  ('HSV', 'ALL', 10, 8)
+#accuracy:  0.9947   parameter:  ('HSV', 'ALL', 9, 16)
+#accuracy:  0.9944   parameter:  ('YCrCb', 'ALL', 10, 8)
+#accuracy:  0.9944   parameter:  ('LUV', 'ALL', 12, 16)
+#accuracy:  0.9941   parameter:  ('YCrCb', 'ALL', 10, 16)
+#accuracy:  0.9941   parameter:  ('HLS', 'ALL', 12, 8)
+#accuracy:  0.9941   parameter:  ('LUV', 'ALL', 7, 8)
+#accuracy:  0.9938   parameter:  ('YUV', 'ALL', 12, 8)
+#accuracy:  0.9935   parameter:  ('HLS', 'ALL', 8, 8)
+#accuracy:  0.9935   parameter:  ('HSV', 'ALL', 10, 16)
+#accuracy:  0.9932   parameter:  ('YCrCb', 'ALL', 11, 16)
+#accuracy:  0.9932   parameter:  ('HLS', 'ALL', 12, 16)
+#accuracy:  0.9932   parameter:  ('HLS', 'ALL', 10, 8)
+#accuracy:  0.9932   parameter:  ('HSV', 'ALL', 9, 8)
 color_space ='YCrCb' # ['RGB', 'HSV', 'LUV', 'HLS', 'YUV', 'YCrCb']
 hog_channel = 'ALL' # Can be 0, 1, 2, or "ALL"
 orient = 6 # HOG orientations [6,7,8,9,10,11,12]
