@@ -53,6 +53,7 @@ This project requires **Python 3.5** and the following Python libraries installe
 - `LICENSE`: GNU GENERAL PUBLIC LICENSE file.
 
 ## How to use
+1. Down load data for [vehicles](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip) and [non-vehicles](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip), extract them to `data`.
 
 1. run python script in `prepare_data.py` to prepare training data.
 
@@ -82,8 +83,8 @@ I started by reading in all the `vehicle` and `non-vehicle` images.  Here are so
 
 vehicle | non-vehicle        
 ----|-------
-![vehicle](./data/vehicles/GTI_Far/image0000.png) ![vehicle](./data/vehicles/GTI_Left/image0009.png) ![vehicle](./data/vehicles/GTI_MiddleClose/image0000.png)  | ![non-vehicle](./data/non-vehicles/GTI/image12.png) ![non-vehicle](./data/non-vehicles/GTI/image42.png) ![non-vehicle](./data/non-vehicles/GTI/image92.png)
-![vehicle](./data/vehicles/GTI_Right/image0000.png) ![vehicle](./data/vehicles/KITTI_extracted/1.png) ![vehicle](./data/vehicles/KITTI_extracted/8.png)  | ![non-vehicle](./data/non-vehicles/Extras/extra1.png) ![non-vehicle](./data/non-vehicles/Extras/extra9.png) ![non-vehicle](./data/non-vehicles/Extras/extra823.png)
+![vehicle](./data/data_examples/cars/6.png) ![vehicle](./data/data_examples/cars/16.png) ![vehicle](./data/data_examples/cars/image0000.png)  | ![non-vehicle](./data/data_examples/notcars/extra6.png) ![non-vehicle](./data/data_examples/notcars/extra21.png) ![non-vehicle](./data/data_examples/notcars/extra27.png)
+![vehicle](./data/data_examples/cars/image0041.png) ![vehicle](./data/data_examples/cars/image0002.png) ![vehicle](./data/data_examples/cars/image0010.png)  | ![non-vehicle](./data/data_examples/notcars/image26.png) ![non-vehicle](./data/data_examples/notcars/image43.png) ![non-vehicle](./data/data_examples/notcars/image48.png)
 
 I then explored different color spaces and channels, and different `skimage.hog()` parameters (`orient`, `pixels_per_cell`). However, I fixed the `cells_per_block` to be (2, 2), since I don't see much space for tuning it for images sized at 64*64.
 
